@@ -2,9 +2,6 @@
 const server = require("http").Server();
 const port = process.env.PORT || 10000;
 
-Access-Control-Allow-Origin: http:worldwebapp.herokuapp.com/
-
-
 var io = require("socket.io")(server);
 
 var usernames = [];
