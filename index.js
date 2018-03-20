@@ -7,8 +7,6 @@ var usernames = [];
 
 var msgs = [];
 
-//var comments = [];
-
 var allRooms= {};
 
 var allStickers = {};
@@ -23,13 +21,16 @@ io.on("connection", function(socket){
         io.emit("usersjoined", usernames);
 
     })
-	
-	/*socket.on("comment", function(data){
-        comments.push(data);
-        
-        io.emit("commentsjoined", comments);
-    })*/
+	//BACKGROUND APP
+    socket.on('change color', (color) => {
+        console.log('Color Changed to: ', color)
+        io.sockets.emit('change color', color)
+  })
+     socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
     
+    //CHATROOM
     socket.on("sendChat", function(data){
         console.log("user sent a msg for chat");
         msgs.push(data);
@@ -40,12 +41,11 @@ io.on("connection", function(socket){
     socket.on("disconnect", function(){
         console.log("user is disconnected");
     })
-	
-//	NEWSHIT
+    
+	//STICKER PAGE
 	socket.on("joinroom", function(data){
 		socket.emit("yourid", socket.id);
 		socket.join(data);
-//		io.emit("createimage", allUsers);
 		socket.myRoom = data;
 		
 		if(!allRooms[data]){
@@ -58,9 +58,7 @@ io.on("connection", function(socket){
 		
 		console.log(data);	
 	});
-	
-	
-	
+
 	
 socket.on("mymove", function(data){
 		socket.to(this.myRoom).emit("usermove", data);
@@ -73,15 +71,13 @@ socket.on("mymove", function(data){
 	});
 	
 	
-
-	
 	socket.on("disconnect", function(){
 	
 	});
 	
 
 
-//NEWNEWNEW
+//QUIZ PAGE
 
 socket.on("joinroom2", function(data){
 	socket.join(data);
@@ -107,7 +103,7 @@ socket.on("answer", function(data){
 	var msg = "Wrong!"
 	
 	if(allRooms[socket.myRoom].q.a == data){
-		msg = "You Got it!";
+		msg = "You're Right! ";
 	}
 	socket.emit("result", msg)
 });	
