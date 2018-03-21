@@ -1,7 +1,7 @@
 const server = require("http").Server();
 const port = process.env.PORT || 10000;
 
-var io = require("socket.io", {transports: ['websocket', 'polling', 'flashsocket']})(server);
+var io = require("socket.io")(server);
 
 var usernames = [];
 
